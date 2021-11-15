@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,20 +8,67 @@ import {
 } from 'react-native';
 
 const AddStudent = ({navigation}) => {
+  const [name, setName] = useState('');
+  const [studentClass, setStudentClass] = useState('');
+  const [marks, setMarks] = useState('');
+  const [gender, setGender] = useState('');
+
+  //   console.log('Name ------> ', name);
+  //   console.log('Class ------> ', studentClass);
+  //   console.log('Marks ------> ', marks);
+  //   console.log('Gender ------> ', gender);
+
+  const SERVER_URL = 'http://172.16.203.168';
+
+  const submitStudentData = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: name,
+        class: studentClass,
+        marks: marks,
+        gender: gender,
+      }),
+    };
+    fetch(`${SERVER_URL}:3000/add_student`, requestOptions)
+      .then(response => response.json())
+      .catch(error => console.error(error))
+      .finally(() => alert('Student data added succesfully!'));
+    navigation.navigate('MongoDBTest');
+  };
+
   return (
     <View style={styles.container}>
-      <TextInput style={styles.input} placeholder="Enter your Name" />
-      <TextInput style={styles.input} placeholder="Enter your Class" />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your Name"
+        value={name}
+        onChangeText={value => setName(value)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your Class"
+        value={studentClass}
+        onChangeText={value => setStudentClass(value)}
+      />
       <TextInput
         style={styles.input}
         placeholder="Enter your Marks"
         keyboardType="numeric"
+        value={marks}
+        onChangeText={value => setMarks(value)}
       />
-      <TextInput style={styles.input} placeholder="Enter your Gender" />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your Gender"
+        value={gender}
+        onChangeText={value => setGender(value)}
+      />
       <View>
         <TouchableOpacity
           style={styles.buttonStyle}
-          onPress={() => navigation.goBack()}>
+          onPress={() => submitStudentData()}>
           <Text style={styles.btnText}>Submit</Text>
         </TouchableOpacity>
       </View>

@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 const SERVER_URL = 'http://172.16.203.168';
 
-const MongoDBTest = ({navigation}) => {
+const MongoDBTest = ({navigation, route}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const MongoDBTest = ({navigation}) => {
         console.error(error);
         alert('An error occured: ' + error);
       });
-  }, []);
+  }, [data]);
 
   return (
     <View style={{flex: 1}}>
