@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const SERVER_URL = 'http://172.16.203.168';
 
-const MongoDBTest = () => {
+const MongoDBTest = ({navigation}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -18,8 +18,14 @@ const MongoDBTest = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>MongoDB Test Screen</Text>
-      <Text style={styles.subHeading}>Data output from database:</Text>
+      <View>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={() => navigation.navigate('AddStudent')}>
+          <Text style={styles.btnText}>Add Student</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.heading}>Data output from database:</Text>
 
       {data.length === 0 ? (
         <View style={styles.noData}>
@@ -51,13 +57,6 @@ const styles = StyleSheet.create({
 
   heading: {
     color: '#ffffff',
-    backgroundColor: 'green',
-    fontSize: 20,
-    padding: 10,
-    margin: 5,
-  },
-  subHeading: {
-    color: '#ffffff',
     backgroundColor: 'purple',
     fontSize: 20,
     padding: 10,
@@ -81,6 +80,17 @@ const styles = StyleSheet.create({
   },
   dataText: {
     color: '#fff',
+    fontSize: 18,
+  },
+  buttonStyle: {
+    backgroundColor: '#0cb985',
+    padding: 12,
+    width: 150,
+    margin: 10,
+  },
+  btnText: {
+    color: '#fff',
+    textAlign: 'center',
     fontSize: 18,
   },
 });
