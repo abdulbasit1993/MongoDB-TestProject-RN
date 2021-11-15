@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 
+const SERVER_URL = 'http://172.16.203.168';
+
 const MongoDBTest = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.0.108:3000/users')
+    fetch(`${SERVER_URL}:3000/students`)
       .then(response => response.json())
       .then(json => {
         console.log('data ---->', json);
@@ -29,7 +31,9 @@ const MongoDBTest = () => {
           renderItem={({item}) => (
             <View style={styles.dataItem}>
               <Text style={styles.dataText}>Name: {item.name}</Text>
-              <Text style={styles.dataText}>Age: {item.age}</Text>
+              <Text style={styles.dataText}>Class: {item.class}</Text>
+              <Text style={styles.dataText}>Marks: {item.marks}</Text>
+              <Text style={styles.dataText}>Gender: {item.gender}</Text>
             </View>
           )}
         />

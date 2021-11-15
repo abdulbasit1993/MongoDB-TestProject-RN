@@ -1,23 +1,23 @@
 const express = require('express');
-const userModel = require('./models');
+const studentModel = require('./models');
 const app = express();
 
-app.post('/add_user', async (request, response) => {
-  const user = new userModel(request.body);
+app.post('/add_student', async (request, response) => {
+  const Student = new studentModel(request.body);
 
   try {
-    await user.save();
-    response.send(user);
+    await Student.save();
+    response.send(Student);
   } catch (error) {
     response.status(500).send(error);
   }
 });
 
-app.get('/users', async (request, response) => {
-  const users = await userModel.find({});
+app.get('/students', async (request, response) => {
+  const students = await studentModel.find({});
 
   try {
-    response.send(users);
+    response.send(students);
   } catch (error) {
     response.status(500).send(error);
   }
