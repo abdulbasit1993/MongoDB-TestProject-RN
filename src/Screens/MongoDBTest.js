@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 const SERVER_URL = 'http://172.16.203.168';
 
@@ -10,47 +10,54 @@ const MongoDBTest = ({navigation}) => {
     fetch(`${SERVER_URL}:3000/students`)
       .then(response => response.json())
       .then(json => {
-        console.log('data ---->', json);
         setData(json);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.error(error);
+        alert('An error occured: ' + error);
+      });
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View>
+    <View style={{flex: 1}}>
+      <View style={styles.btnContainer}>
         <TouchableOpacity
           style={styles.buttonStyle}
           onPress={() => navigation.navigate('AddStudent')}>
           <Text style={styles.btnText}>Add Student</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.heading}>Data output from database:</Text>
 
-      {data.length === 0 ? (
-        <View style={styles.noData}>
-          <Text style={styles.noDataText}>No data found...</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={({item}) => (
-            <View style={styles.dataItem}>
-              <Text style={styles.dataText}>Name: {item.name}</Text>
-              <Text style={styles.dataText}>Class: {item.class}</Text>
-              <Text style={styles.dataText}>Marks: {item.marks}</Text>
-              <Text style={styles.dataText}>Gender: {item.gender}</Text>
-            </View>
-          )}
-        />
-      )}
+      <View style={{flex: 1, padding: 15}}>
+        <Text style={styles.heading}>Data output from database:</Text>
+
+        {data.length === 0 ? (
+          <View style={styles.noData}>
+            <Text style={styles.noDataText}>No data found...</Text>
+          </View>
+        ) : (
+          <FlatList
+            contentContainerStyle={{flexGrow: 1}}
+            data={data}
+            ItemSeparatorComponent={() => <View style={{marginBottom: 15}} />}
+            renderItem={({item}) => (
+              <View style={styles.dataItem}>
+                <Text style={styles.dataText}>Name: {item.name}</Text>
+                <Text style={styles.dataText}>Class: {item.class}</Text>
+                <Text style={styles.dataText}>Marks: {item.marks}</Text>
+                <Text style={styles.dataText}>Gender: {item.gender}</Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -63,7 +70,6 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   noData: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -75,12 +81,16 @@ const styles = StyleSheet.create({
   },
   dataItem: {
     backgroundColor: '#5630ff',
-    margin: 12,
+    // margin: 10,
     padding: 15,
   },
   dataText: {
     color: '#fff',
     fontSize: 18,
+  },
+  btnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonStyle: {
     backgroundColor: '#0cb985',
